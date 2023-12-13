@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="5d5f35b8-ebfc-44ad-a83d-bd08f5327672" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/sunfj/SpringBootStarterMain.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/sunfj/controller/TestController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/参考网址.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/springboot.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/sunfj/config/JacksonConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/sunfj/controller/JsonController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/sunfj/entity/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/MavenSettingTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/参考网址.txt" beforeDir="false" afterPath="$PROJECT_DIR$/参考网址.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sunfj.iml" beforeDir="false" afterPath="$PROJECT_DIR$/sunfj.iml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,32 +36,52 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$PROJECT_DIR$/../mavenRepository/org/springframework/spring-web/6.0.11/spring-web-6.0.11.jar!/org/springframework/web/bind/annotation/RestController.class" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
-        <option name="localRepository" value="D:\MavenRepository" />
-        <option name="mavenHome" value="$PROJECT_DIR$/../software/maven/apache-maven-3.6.3" />
-        <option name="userSettingsFile" value="D:\software\maven\apache-maven-3.6.3\conf\settings.xml" />
+        <option name="localRepository" value="E:\java\mavenRepository" />
+        <option name="mavenHome" value="E:\java\software\apache-maven-3.9.6-bin\apache-maven-3.9.6" />
+        <option name="userSettingsFile" value="E:\java\software\apache-maven-3.9.6-bin\apache-maven-3.9.6\conf\settings.xml" />
       </MavenGeneralSettings>
     </option>
   </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="2ZT7nlePEQGJ242pMLTLooqETBv" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="project.structure.last.edited" value="Project" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="File.Encoding" />
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "project.structure.last.edited": "模块",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.fileTypes",
+    "应用程序.SpringBootStarterMain.executor": "Run"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\java\gitRepository\src\main\resources" />
+      <recent name="E:\java\gitRepository\src\main\resources\static" />
+      <recent name="E:\java\gitRepository" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration name="SpringBootStarterMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -69,12 +93,20 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.SpringBootStarterMain" />
+        <item itemvalue="应用程序.SpringBootStarterMain" />
       </list>
     </recent_temporary>
   </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-17.0.9-corretto-17.0.9-8336523bb0d9-93b19daf" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
-    <configuration />
+    <configuration>C:\Users\pestalozzi\AppData\Roaming\Subversion</configuration>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -94,63 +126,12 @@
     <option name="localTasksCounter" value="2" />
     <servers />
   </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="application.yml" />
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="1213" />
     <option name="LAST_COMMIT_MESSAGE" value="1213" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="552" y="174" key="#Project_Structure" timestamp="1702436644707">
-      <screen x="0" y="0" width="1920" height="1032" />
-    </state>
-    <state x="552" y="174" key="#Project_Structure/0.0.1920.1032@0.0.1920.1032" timestamp="1702436644707" />
-    <state x="699" y="318" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1702457977400">
-      <screen x="0" y="0" width="1920" height="1032" />
-    </state>
-    <state x="699" y="318" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1032@0.0.1920.1032" timestamp="1702457977400" />
-    <state x="598" y="107" key="CommitChangelistDialog2" timestamp="1702436864567">
-      <screen x="0" y="0" width="1920" height="1032" />
-    </state>
-    <state x="598" y="107" key="CommitChangelistDialog2/0.0.1920.1032@0.0.1920.1032" timestamp="1702436864567" />
-    <state x="740" y="271" key="FileChooserDialogImpl" timestamp="1702457420839">
-      <screen x="0" y="0" width="1920" height="1032" />
-    </state>
-    <state x="740" y="271" key="FileChooserDialogImpl/0.0.1920.1032@0.0.1920.1032" timestamp="1702457420839" />
-    <state width="1877" height="279" key="GridCell.Tab.0.bottom" timestamp="1702457983266">
-      <screen x="0" y="0" width="1920" height="1032" />
-    </state>
-    <state width="1877" height="279" key="GridCell.Tab.0.bottom/0.0.1920.1032@0.0.1920.1032" timestamp="1702457983266" />
-    <state width="1877" height="279" key="GridCell.Tab.0.center" timestamp="1702457983266">
-      <screen x="0" y="0" width="1920" height="1032" />
-    </state>
-    <state width="1877" height="279" key="GridCell.Tab.0.center/0.0.1920.1032@0.0.1920.1032" timestamp="1702457983266" />
-    <state width="1877" height="279" key="GridCell.Tab.0.left" timestamp="1702457983266">
-      <screen x="0" y="0" width="1920" height="1032" />
-    </state>
-    <state width="1877" height="279" key="GridCell.Tab.0.left/0.0.1920.1032@0.0.1920.1032" timestamp="1702457983266" />
-    <state width="1877" height="279" key="GridCell.Tab.0.right" timestamp="1702457983266">
-      <screen x="0" y="0" width="1920" height="1032" />
-    </state>
-    <state width="1877" height="279" key="GridCell.Tab.0.right/0.0.1920.1032@0.0.1920.1032" timestamp="1702457983266" />
-    <state x="461" y="158" key="SettingsEditor" timestamp="1702457538989">
-      <screen x="0" y="0" width="1920" height="1032" />
-    </state>
-    <state x="461" y="158" key="SettingsEditor/0.0.1920.1032@0.0.1920.1032" timestamp="1702457538989" />
-    <state x="92" y="92" width="1736" height="848" key="ShowDiffWithBranchDialog" timestamp="1702436790488">
-      <screen x="0" y="0" width="1920" height="1032" />
-    </state>
-    <state x="92" y="92" width="1736" height="848" key="ShowDiffWithBranchDialog/0.0.1920.1032@0.0.1920.1032" timestamp="1702436790488" />
-    <state x="552" y="249" key="Vcs.Push.Dialog.v2" timestamp="1702436917600">
-      <screen x="0" y="0" width="1920" height="1032" />
-    </state>
-    <state x="552" y="249" key="Vcs.Push.Dialog.v2/0.0.1920.1032@0.0.1920.1032" timestamp="1702436917600" />
-    <state x="710" y="250" key="VcsDiffUtil.ChangesDialog" timestamp="1702458125946">
-      <screen x="0" y="0" width="1920" height="1032" />
-    </state>
-    <state x="710" y="250" key="VcsDiffUtil.ChangesDialog/0.0.1920.1032@0.0.1920.1032" timestamp="1702458125946" />
-    <state x="334" y="210" key="new project wizard" timestamp="1702454997534">
-      <screen x="0" y="0" width="1920" height="1032" />
-    </state>
-    <state x="334" y="210" key="new project wizard/0.0.1920.1032@0.0.1920.1032" timestamp="1702454997534" />
   </component>
 </project>

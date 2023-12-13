@@ -1,0 +1,22 @@
+一、注解
+@Configuration
+@Bean
+@SpringBootApplication
+@Autowired
+@RestController
+@ResponseBody
+    注解是将返回的数据结构转换为 Json
+@RequestMapping
+@Service
+@Primary
+    当有多个相同类型的bean时，使用@Primary来赋予bean更高的优先级
+@Qualifier(“beanName”)
+    通过别名控制访问相同类型。
+@Component
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@Test
+@ConditionalOnMissingBean(ObjectMapper.class)
+二、配置
+
+三、
