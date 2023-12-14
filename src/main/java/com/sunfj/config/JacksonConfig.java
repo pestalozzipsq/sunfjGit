@@ -12,7 +12,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 import java.io.IOException;
 
-@Configuration
+//@Configuration
 public class JacksonConfig {
     @Bean
     @Primary

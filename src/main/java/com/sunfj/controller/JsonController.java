@@ -19,10 +19,11 @@ public class JsonController {
 
     @RequestMapping("/list")
     public List<User> list(){
-        List<User> list = new ArrayList<>();
-        list.add(new User(1L,"xiaohong","123456"));
-        list.add(new User(2L,"xiaobai","654321"));
-        return list;
+
+//        List<User> list = new ArrayList<>();
+//        list.add(new User(1L,"xiaohong","123456"));
+//        list.add(new User(2L,"xiaobai","654321"));
+        return null;
     }
 
     @RequestMapping("/map")
