@@ -6,3 +6,14 @@ https://fanyi.youdao.com/index.html#/
 https://www.csdn.net/
 https://leetcode.cn/
 https://developer.aliyun.com/mvn/guide
+
+Caused by: java.lang.IllegalArgumentException: LoggerFactory is not a Logback
+ LoggerContext but Logback is on the classpath. Either remove Logback
+ or the competing implementation (class org.slf4j.impl.Log4jLoggerFactory
+ loaded from
+ file:/E:/IT_zhengqing/soft/soft-dev/Maven/repository-zhengqing/org/slf4j/slf4j-log4j12/1.7.30/slf4j-log4j12-1.7.30.jar).
+ If you are using WebLogic you will need to add 'org.slf4j' to prefer-application-packages in WEB-INF/weblogic.xml: org.slf4j.impl.Log4jLoggerFactory
+
+————————————————
+版权声明：本文为CSDN博主「郑清」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/qq_38225558/article/details/111823106

@@ -10,18 +10,9 @@
     <packaging>pom</packaging>
     <modules>
         <module>springcloud</module>
+        <module>springboot</module>
     </modules>
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <version>3.1.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>2.0.9</version>
-        </dependency>
-    </dependencies>
 
+    </dependencies>
 </project>
