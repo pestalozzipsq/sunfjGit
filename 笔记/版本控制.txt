@@ -1,0 +1,92 @@
+Git
+一、基本命令
+全局配置
+git config --global  user.name  "nameVal" 配置用户名
+git config --global  user.email  "email@qq.com" 配置邮箱
+ 创建
+cd /
+md mygit 创建
+cd /mygit
+git init 初始化
+
+ 添加到暂存盘
+git add my.txt  添加my.txt到暂存盘
+git add *.txt 所有的txt文件添加到暂存盘
+git add .  所有的文件添加到暂存盘（.）
+
+ 从暂存盘撤回
+git checkout my.txt  撤回my.txt文件
+git checkout .  全部撤回
+
+ 提交到版本库
+git commit -m "提示文本"
+
+ 从版本库切换版本库
+git reset --hard  版本号（回到之前的内容）
+git reset --hard HEAD^^  后退两步
+
+ 查看记录
+git log  提交记
+git reflog 查看所有相关记录
+
+ 分支
+git branch  查看所有分支
+git branch beibei   创建beibei分支
+git checkout -b 分支名  切换并创建分支
+git checkout 分支名  切换分支
+git merge 分支名  把某分支合并并到当前分支
+
+
+二、连接github
+$ git init
+$ ssh-keygen -t rsa -C "your_email@youremail.com"
+登陆GitHub，打开“Account settings”，左边选择SSH Keys，Add SSH Key,
+$ ssh -T git@github.com
+$ git remote add origin git@github.com:yourName/yourRepo.git
+git push -u origin master
+
+.gitignore添加文件名
+git rm -rf --cache 文件名
+git add
+git commit
+
+
+Maven
+<mirror>
+  <id>aliyunmaven</id>
+  <mirrorOf>*</mirrorOf>
+  <name>阿里云公共仓库</name>
+  <url>https://maven.aliyun.com/repository/public</url>
+</mirror>
+<mirror>
+    <id>nexus-163</id>
+    <mirrorOf>*</mirrorOf>
+    <name>Nexus 163</name>
+    <url>http://mirrors.163.com/maven/repository/maven-public/</url>
+</mirror>
+<mirror>
+    <id>nexus-tencentyun</id>
+    <mirrorOf>*</mirrorOf>
+    <name>Nexus tencentyun</name>
+    <url>http://mirrors.cloud.tencent.com/nexus/repository/maven-public/</url>
+</mirror>
+
+
+
+
+<!-- java1.8版本 -->
+<profile>
+      <id>jdk-1.8</id>
+      <activation>
+	    <activeByDefault>true</activeByDefault>
+        <jdk>1.8</jdk>
+      </activation>
+
+      <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
+      </properties>
+</profile>
+
+
