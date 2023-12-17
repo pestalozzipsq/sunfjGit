@@ -42,11 +42,34 @@
 @RequestBody
     @RequestBody 注解用于 POST 请求上，接收 json 实体参数
     实体参数可用于接收表单提交
-
-
-
-
-
+@ControllerAdvice
+    包含了 @Component 注解，说明在 Spring Boot 启动时，也会把该类作为组件交给 Spring 来管理。除此之外，该注解还有个 basePackages 属性，该属性是用来拦截哪个包中的异常信息
+@ExceptionHandler(NullPointerException.class)
+@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+1、切面注解
+@Aspect
+    用来描述一个切面类，定义切面类的时候需要打上这个注解
+@Pointcut
+    用来定义一个切面（切入点），即上文中所关注的某件事情的入口。
+    两个常用的表达式：
+        一个是使用 execution()，
+            以 execution(* com.itcodai.course09.controller..*.*(..))) 表达式为例，语法如下：
+            execution() 为表达式主体
+            第一个 * 号的位置：表示返回值类型，* 表示所有类型
+            包名：表示需要拦截的包名，后面的两个句点表示当前包和当前包的所有子包，com.itcodai.course09.controller 包、子包下所有类的方法
+            第二个 * 号的位置：表示类名，* 表示所有类
+            *(..) ：这个星号表示方法名，* 表示所有的方法，后面括弧里面表示方法的参数，两个句点表示任何参数
+        另一个是使用 annotation()。
+            annotation() 方式是针对某个注解来定义切面，比如我们对具有@GetMapping注解的方法做切面，可以如下定义切面：
+            @Pointcut("@annotation(org.springframework.web.bind.annotation.GetMapping)")
+@Before：
+    在做某件事之前做的事。参数为加了切点的方法名@Before("pointCut()")
+@After：
+    在做某件事之后做的事。同Before
+@AfterReturning(pointcut = "pointCut()", returning = "result")：
+    在做某件事之后，对其返回值做增强处理。
+@AfterThrowing：
+    在做某件事抛出异常时，处理。注解是当被切方法执行时抛出异常时，会进入 @AfterThrowing 注解的方法中执行
 
 二、配置
 默认核心配置文件名为 application，支持 application.properties、application.yml、application.yaml
@@ -128,3 +151,19 @@ th:action	表单提交的地址
 
 5、官方文档
 https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html
+
+六、统一异常处理
+新建一个类
+GlobalExceptionHandler 全局异常处理类，然后加上 @ControllerAdvice 注解即可拦截项目中抛出的异常
+@ResponseBody 注解是为了异常处理完之后给调用方输出一个 json 格式的封装数据。
+类中添加方法并添加下列注解，参数为对应异常
+@ExceptionHandler(NullPointerException.class)
+@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+
+七、AOP处理
+使用AOP，首先需要引入AOP的依赖。
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-aop</artifactId>
+</dependency>
+
