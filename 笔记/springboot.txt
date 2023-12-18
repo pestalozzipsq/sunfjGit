@@ -1,87 +1,124 @@
 一、注解
-@Configuration
-@Bean
-@SpringBootApplication
-@Autowired/@Resource
-@RestController
-    返回的数据结构转换为 Json 格式。所以 @RestController 可以看作是 @Controller 和 @ResponseBody 的结合体
-    不是前后端分离，需要使用模板来渲染的话，一般 Controller 中都会返回到具体的页面，那么此时就不能使用@RestController了
-@ResponseBody
-    注解是将返回的数据结构转换为 Json
-@RequestMapping  (@GetMapping\@PutMapping\@DeleteMapping\@PostMapping )
-    可以用于类上，也可以用于方法上
-    value 属性：指定请求的实际地址，value 可以省略不写
-    method 属性：指定请求的类型，主要有 GET、PUT、POST、DELETE，默认为 GET
-    produces属性：指定返回内容类型，如 produces = “application/json; charset=UTF-8”
-@Service
-@Primary
-    当有多个相同类型的bean时，使用@Primary来赋予bean更高的优先级
-@Qualifier(“beanName”)
-    通过别名控制访问相同类型。
-@Component
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@Test
-@ConditionalOnMissingBean(ObjectMapper.class)
-@Value("${url.orderUrl}")
-    获取配置文件中的属性
-@PathVariable
-    value:指定接收参数名
-    用来获取 url 参数 GET ;请求携带一个参数 id 过来，我们将 id 作为参数接收
-@RequestParam
-    从 request 里面获取参数值
-    required 属性：true 表示该参数必须要传，否则就会报 404 错误，false 表示可有可无。
-    defaultValue 属性：默认值，表示如果请求中没有同名参数时的默认值。
-    如果表单数据很多,我们需要封装一个实体类来接收这些参数，实体中的属性名和表单中的参数名一致即可。
-    @PostMapping("/form2")
-        public String testForm(User user) {
-            System.out.println("获取到的username为：" + user.getUsername());
-            System.out.println("获取到的password为：" + user.getPassword());
-            return "success";
-        }
-@RequestBody
-    @RequestBody 注解用于 POST 请求上，接收 json 实体参数
-    实体参数可用于接收表单提交
-@ControllerAdvice
-    包含了 @Component 注解，说明在 Spring Boot 启动时，也会把该类作为组件交给 Spring 来管理。除此之外，该注解还有个 basePackages 属性，该属性是用来拦截哪个包中的异常信息
-@ExceptionHandler(NullPointerException.class)
-@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-1、切面注解
-@Aspect
-    用来描述一个切面类，定义切面类的时候需要打上这个注解
-@Pointcut
-    用来定义一个切面（切入点），即上文中所关注的某件事情的入口。
-    两个常用的表达式：
-        一个是使用 execution()，
-            以 execution(* com.itcodai.course09.controller..*.*(..))) 表达式为例，语法如下：
-            execution() 为表达式主体
-            第一个 * 号的位置：表示返回值类型，* 表示所有类型
-            包名：表示需要拦截的包名，后面的两个句点表示当前包和当前包的所有子包，com.itcodai.course09.controller 包、子包下所有类的方法
-            第二个 * 号的位置：表示类名，* 表示所有类
-            *(..) ：这个星号表示方法名，* 表示所有的方法，后面括弧里面表示方法的参数，两个句点表示任何参数
-        另一个是使用 annotation()。
-            annotation() 方式是针对某个注解来定义切面，比如我们对具有@GetMapping注解的方法做切面，可以如下定义切面：
-            @Pointcut("@annotation(org.springframework.web.bind.annotation.GetMapping)")
-@Before：
-    在做某件事之前做的事。参数为加了切点的方法名@Before("pointCut()")
-@After：
-    在做某件事之后做的事。同Before
-@AfterReturning(pointcut = "pointCut()", returning = "result")：
-    在做某件事之后，对其返回值做增强处理。
-@AfterThrowing：
-    在做某件事抛出异常时，处理。注解是当被切方法执行时抛出异常时，会进入 @AfterThrowing 注解的方法中执行
+1、常用注解
+    @SpringBootApplication
+    @Configuration
+    @Bean
+    @ConditionalOnMissingBean(ObjectMapper.class)
+            当你的bean被注册之后，如果而注册相同类型的bean，就不会成功，它会保证你的bean只有一个，即你的实例只有一个。
+    @Autowired/@Resource
+    @Primary
+        当有多个相同类型的bean时，使用@Primary来赋予bean更高的优先级
+    @Qualifier(“beanName”)
+        通过别名控制访问相同类型。
+    @Value("${url.orderUrl}")
+            获取配置文件中的属性
+2、MVC流程注解
+    @Service
+    @Controller
+    @Component
+    @RestController
+        返回的数据结构转换为 Json 格式。所以 @RestController 可以看作是 @Controller 和 @ResponseBody 的结合体
+        不是前后端分离，需要使用模板来渲染的话，一般 Controller 中都会返回到具体的页面，那么此时就不能使用@RestController了
+    @ResponseBody
+        注解是将返回的数据结构转换为 Json
+    @RequestBody
+        @RequestBody 注解用于 POST 请求上，接收 json 实体参数
+        实体参数可用于接收表单提交
+    @RequestMapping  (@GetMapping\@PutMapping\@DeleteMapping\@PostMapping )
+        可以用于类上，也可以用于方法上
+        value 属性：指定请求的实际地址，value 可以省略不写
+        method 属性：指定请求的类型，主要有 GET、PUT、POST、DELETE，默认为 GET
+        produces属性：指定返回内容类型，如 produces = “application/json; charset=UTF-8”
+    @PathVariable
+        value:指定接收参数名
+        用来获取 url 参数 GET ;请求携带一个参数 id 过来，我们将 id 作为参数接收
+    @RequestParam
+        从 request 里面获取参数值
+        required 属性：true 表示该参数必须要传，否则就会报 404 错误，false 表示可有可无。
+        defaultValue 属性：默认值，表示如果请求中没有同名参数时的默认值。
+        如果表单数据很多,我们需要封装一个实体类来接收这些参数，实体中的属性名和表单中的参数名一致即可。
+        @PostMapping("/form2")
+            public String testForm(User user) {
+                System.out.println("获取到的username为：" + user.getUsername());
+                System.out.println("获取到的password为：" + user.getPassword());
+                return "success";
+            }
+
+3、测试相关注解
+    @RunWith(SpringRunner.class)
+        Test测试类要使用注入的类，比如@Autowired注入的类，有了@RunWith(SpringRunner.class)这些类才能实例化到spring容器中，自动注入才能生效。
+    @SpringBootTest
+
+    @Test
+        测试方法
+
+
+4、统一异常处理注解
+    @ControllerAdvice
+        适用于类，包含了 @Component 注解，说明在 Spring Boot 启动时，也会把该类作为组件交给 Spring 来管理。除此之外，该注解还有个 basePackages 属性，该属性是用来拦截哪个包中的异常信息
+    @ExceptionHandler(NullPointerException.class)
+        适用于方法，方法所在类需要被@ControllerAdvice注解，参数为拦截的异常
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+        设置Servlet返回的异常码
+5、切面注解
+    @Aspect
+        用来描述一个切面类，定义切面类的时候需要打上这个注解
+    @Pointcut
+        用来定义一个切面（切入点），即上文中所关注的某件事情的入口。
+        两个常用的表达式：
+            一个是使用 execution()，
+                以 execution(* com.itcodai.course09.controller..*.*(..))) 表达式为例，语法如下：
+                execution() 为表达式主体
+                第一个 * 号的位置：表示返回值类型，* 表示所有类型
+                包名：表示需要拦截的包名，后面的两个句点表示当前包和当前包的所有子包，com.itcodai.course09.controller 包、子包下所有类的方法
+                第二个 * 号的位置：表示类名，* 表示所有类
+                *(..) ：这个星号表示方法名，* 表示所有的方法，后面括弧里面表示方法的参数，两个句点表示任何参数
+            另一个是使用 annotation()。
+                annotation() 方式是针对某个注解来定义切面，比如我们对具有@GetMapping注解的方法做切面，可以如下定义切面：
+                @Pointcut("@annotation(org.springframework.web.bind.annotation.GetMapping)")
+    @Before：
+        在做某件事之前做的事。参数为加了切点的方法名@Before("pointCut()")
+    @After：
+        在做某件事之后做的事。同Before
+    @AfterReturning(pointcut = "pointCut()", returning = "result")：
+        在做某件事之后，对其返回值做增强处理。
+    @AfterThrowing：
+        在做某件事抛出异常时，处理。注解是当被切方法执行时抛出异常时，会进入 @AfterThrowing 注解的方法中执行
+6、mybatis集成注解
+    @Mapper
+    @MapperScan("com.*.*.dao")
+        注册mybatis dao类
+    @Repository
+    @Select("select * from .. where id=#{id}")
+    @Insert
+    @Update
+    @Delete
+        增删改查注解
+    @Param("id")
+        修饰dao方法参数，对应多个参数名称
+    @Results({@Result(property = "username", column = "user_name")})
+        明文设置entity与数据库对应字段,默认驼峰命名法，类似xml文件中ResultMap
+
+
+
+
+
+
+
+
+
+
+
+
 
 二、配置
-默认核心配置文件名为 application，支持 application.properties、application.yml、application.yaml
-者同时存在时，优先级为：properties > yaml > yml
-直接或间接依赖 spring-cloud-context，此时才会读取 bootstrap.yml 文件和 application.yml 文件，这种情况下 bootstrap.yml 优先级高于其他核心配置文件。
-spring:
-  profiles:
-    active: local(@占位符@)
-java -jar hero-springboot-demo.jar --spring.profiles.active=test
-
-
-
+    默认核心配置文件名为 application，支持 application.properties、application.yml、application.yaml
+    者同时存在时，优先级为：properties > yaml > yml
+    直接或间接依赖 spring-cloud-context，此时才会读取 bootstrap.yml 文件和 application.yml 文件，这种情况下 bootstrap.yml 优先级高于其他核心配置文件。
+    spring:
+      profiles:
+        active: local(@占位符@)
+    java -jar hero-springboot-demo.jar --spring.profiles.active=test
 
 
 
@@ -95,119 +132,119 @@ java -jar hero-springboot-demo.jar --spring.profiles.active=test
 
 
 四、Swagger
-开发人员不需要给他们提供文档，只要告诉他们一个 Swagger 地址，即可展示在线的 API 接口文档，除此之外，调用接口的人员还可以在线测试接口数据，同样地，开发人员在开发接口时，同样也可以利用 Swagger 在线接口文档测试接口数据，这给开发人员提供了便利。
-依赖
-<dependency>
-	<groupId>io.springfox</groupId>
-	<artifactId>springfox-swagger2</artifactId>
-	<version>2.2.2</version>
-</dependency>
-<dependency>
-	<groupId>io.springfox</groupId>
-	<artifactId>springfox-swagger-ui</artifactId>
-	<version>2.2.2</version>
-</dependency>
-新建一个配置类，Swagger2 的配置类上除了添加必要的 @Configuration 注解外，还需要添加 @EnableSwagger2 注解。
-@Api 注解用于类上，表示标识这个类是 swagger 的资源。
-@ApiOperation 注解用于方法，表示一个 http 请求的操作。
-@ApiParam 注解用于参数上，用来标明参数信息。
+    开发人员不需要给他们提供文档，只要告诉他们一个 Swagger 地址，即可展示在线的 API 接口文档，除此之外，调用接口的人员还可以在线测试接口数据，同样地，开发人员在开发接口时，同样也可以利用 Swagger 在线接口文档测试接口数据，这给开发人员提供了便利。
+    依赖
+    <dependency>
+        <groupId>io.springfox</groupId>
+        <artifactId>springfox-swagger2</artifactId>
+        <version>2.2.2</version>
+    </dependency>
+    <dependency>
+        <groupId>io.springfox</groupId>
+        <artifactId>springfox-swagger-ui</artifactId>
+        <version>2.2.2</version>
+    </dependency>
+    新建一个配置类，Swagger2 的配置类上除了添加必要的 @Configuration 注解外，还需要添加 @EnableSwagger2 注解。
+    @Api 注解用于类上，表示标识这个类是 swagger 的资源。
+    @ApiOperation 注解用于方法，表示一个 http 请求的操作。
+    @ApiParam 注解用于参数上，用来标明参数信息。
 
 
 五、集成Thymeleaf
-1、依赖导入
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-thymeleaf</artifactId>
-</dependency>
+    1、依赖导入
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-thymeleaf</artifactId>
+    </dependency>
 
-2、
-hymeleaf 中已经有默认的配置了，我们不需要再对其做过多的配置，有一个需要注意一下，Thymeleaf 默认是开启页面缓存的，所以在开发的时候，需要关闭这个页面缓存，配置如下。
-spring:
-  thymeleaf:
-    cache: false #关闭缓存
-templates/ 目录下新建一个 error 文件夹，专门放置错误的 html 页面
+    2、
+    hymeleaf 中已经有默认的配置了，我们不需要再对其做过多的配置，有一个需要注意一下，Thymeleaf 默认是开启页面缓存的，所以在开发的时候，需要关闭这个页面缓存，配置如下。
+    spring:
+      thymeleaf:
+        cache: false #关闭缓存
+    templates/ 目录下新建一个 error 文件夹，专门放置错误的 html 页面
 
-3、
-在 html 页面上如果要使用 thymeleaf 模板，需要在页面标签中引入：<html xmlns:th="http://www.thymeleaf.org">
-使用模板引擎时，Controller 层就不能用 @RestController 注解
-thymeleaf 模板中，使用 th:object="${}" 来获取对象信息
-使用 th:value="*{属性名}"
-使用 th:value="${对象.属性名}"，对象指的是上面使用 th:object 获取的对象
-使用 th:value="${对象.get方法}"，对象指的是上面使用 th:object 获取的对象
-Thymeleaf 使用 th:each 进行遍历，${} 取 model 中传过来的参数，然后自定义 list 中取出来的每个对象，这里定义为 blogger。表单里面可以直接使用 ${对象.属性名} 来获取 list 中对象的属性值，也可以使用 ${对象.get方法} 来获取，这点和上面处理对象信息是一样的，但是不能使用 *{属性名} 来获取对象中的属性，thymeleaf 模板获取不到
+    3、
+    在 html 页面上如果要使用 thymeleaf 模板，需要在页面标签中引入：<html xmlns:th="http://www.thymeleaf.org">
+    使用模板引擎时，Controller 层就不能用 @RestController 注解
+    thymeleaf 模板中，使用 th:object="${}" 来获取对象信息
+    使用 th:value="*{属性名}"
+    使用 th:value="${对象.属性名}"，对象指的是上面使用 th:object 获取的对象
+    使用 th:value="${对象.get方法}"，对象指的是上面使用 th:object 获取的对象
+    Thymeleaf 使用 th:each 进行遍历，${} 取 model 中传过来的参数，然后自定义 list 中取出来的每个对象，这里定义为 blogger。表单里面可以直接使用 ${对象.属性名} 来获取 list 中对象的属性值，也可以使用 ${对象.get方法} 来获取，这点和上面处理对象信息是一样的，但是不能使用 *{属性名} 来获取对象中的属性，thymeleaf 模板获取不到
 
-4、
-th:value	给属性赋值
-th:style	设置样式	th:style="'display:'+@{(${sitrue}?'none':'inline-block')} + ''"
-th:onclick	点击事件	th:onclick="'getInfo()'"
-th:if	条件判断
-th:href	超链接	Login />
-th:unless	条件判断和th:if相反	Login
-th:switch	配合th:case
-th:case	配合th:switch	administator
-th:src	地址引入
-th:action	表单提交的地址
+    4、常用th
+    th:value	给属性赋值
+    th:style	设置样式	th:style="'display:'+@{(${sitrue}?'none':'inline-block')} + ''"
+    th:onclick	点击事件	th:onclick="'getInfo()'"
+    th:if	条件判断
+    th:href	超链接	Login />
+    th:unless	条件判断和th:if相反	Login
+    th:switch	配合th:case
+    th:case	配合th:switch	administator
+    th:src	地址引入
+    th:action	表单提交的地址
 
+    5、官方文档
+    https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html
 
-5、官方文档
-https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html
 
 六、统一异常处理
-新建一个类
-GlobalExceptionHandler 全局异常处理类，然后加上 @ControllerAdvice 注解即可拦截项目中抛出的异常
-@ResponseBody 注解是为了异常处理完之后给调用方输出一个 json 格式的封装数据。
-类中添加方法并添加下列注解，参数为对应异常
-@ExceptionHandler(NullPointerException.class)
-@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    新建一个类
+    GlobalExceptionHandler 全局异常处理类，然后加上 @ControllerAdvice 注解即可拦截项目中抛出的异常
+    @ResponseBody 注解是为了异常处理完之后给调用方输出一个 json 格式的封装数据。
+    类中添加方法并添加下列注解，参数为对应异常
+    @ExceptionHandler(NullPointerException.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+
 
 七、AOP处理
-使用AOP，首先需要引入AOP的依赖。
-<dependency>
-	<groupId>org.springframework.boot</groupId>
-	<artifactId>spring-boot-starter-aop</artifactId>
-</dependency>
+    使用AOP，首先需要引入AOP的依赖。
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-aop</artifactId>
+    </dependency>
 
 
 八、集成mybatis
-需要导入 mybatis-spring-boot-starter 和 mysql 的依赖
-<dependency>
-	<groupId>org.mybatis.spring.boot</groupId>
-	<artifactId>mybatis-spring-boot-starter</artifactId>
-</dependency>
-<dependency>
-	<groupId>mysql</groupId>
-	<artifactId>mysql-connector-java</artifactId>
-	<scope>runtime</scope>
-</dependency>
-yml文件配置
-    spring:
-      datasource: # 数据库配置
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        #mysql-connector-java8.0.0+版本需要增加参数&serverTimezone=Asia/Shanghai&useTimezone=true
-        url: jdbc:mysql://localhost:3306/learning?useSSL=false&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&autoReconnect=true&failOverReadOnly=false&maxReconnects=10&serverTimezone=Asia/Shanghai&useTimezone=true
-        username: root
-        password: 123456
-        hikari:
-          maximum-pool-size: 10 # 最大连接池数
-          max-lifetime: 1770000
-    mybatis:
-      # 指定别名设置的包为所有entity
-      type-aliases-package: com.sunfj.entity
-      configuration:
-        map-underscore-to-camel-case: true # 驼峰命名规范
-      mapper-locations: # mapper映射文件位置
-        - classpath:mapper/*.xml
+    需要导入 mybatis-spring-boot-starter 和 mysql 的依赖
+    <dependency>
+        <groupId>org.mybatis.spring.boot</groupId>
+        <artifactId>mybatis-spring-boot-starter</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <scope>runtime</scope>
+    </dependency>
+    yml文件配置
+        spring:
+          datasource: # 数据库配置
+            driver-class-name: com.mysql.cj.jdbc.Driver
+            #mysql-connector-java8.0.0+版本需要增加参数&serverTimezone=Asia/Shanghai&useTimezone=true
+            url: jdbc:mysql://localhost:3306/learning?useSSL=false&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&autoReconnect=true&failOverReadOnly=false&maxReconnects=10&serverTimezone=Asia/Shanghai&useTimezone=true
+            username: root
+            password: 123456
+            hikari:
+              maximum-pool-size: 10 # 最大连接池数
+              max-lifetime: 1770000
+        mybatis:
+          # 指定别名设置的包为所有entity
+          type-aliases-package: com.sunfj.entity
+          configuration:
+            map-underscore-to-camel-case: true # 驼峰命名规范
+          mapper-locations: # mapper映射文件位置
+            - classpath:mapper/*.xml
 
+    1、通过xml配置文件形式使用
+        在配置位置生成xml文件，在文件中配置数据库表查询信息及DAO类名称
+        创建接口实现xml内业务，增加@Mapper注解或者启动类增加@MapperScan("*.dao")注册进mybatis
 
-1、通过xml配置文件形式使用
-    在配置位置生成xml文件，在文件中配置数据库表查询信息及DAO类名称
-    创建接口实现xml内业务，增加@Mapper注解或者启动类增加@MapperScan("*.dao")注册进mybatis
-
-2、注解使用
-    @Select， @Insert， @Update， Delete
-    使用@Param对应多个ID
-    使用@Results({
-        @Result(property = "username", column = "user_name")
-    })对应字段,默认驼峰命名法，类似xml文件中ResultMap
+    2、注解使用
+        @Select， @Insert， @Update， Delete
+        使用@Param对应多个ID
+        使用@Results({
+            @Result(property = "username", column = "user_name")
+        })对应字段,默认驼峰命名法，类似xml文件中ResultMap
 
 
