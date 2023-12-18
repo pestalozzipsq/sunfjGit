@@ -167,3 +167,47 @@ GlobalExceptionHandler 全局异常处理类，然后加上 @ControllerAdvice �
 	<artifactId>spring-boot-starter-aop</artifactId>
 </dependency>
 
+
+八、集成mybatis
+需要导入 mybatis-spring-boot-starter 和 mysql 的依赖
+<dependency>
+	<groupId>org.mybatis.spring.boot</groupId>
+	<artifactId>mybatis-spring-boot-starter</artifactId>
+</dependency>
+<dependency>
+	<groupId>mysql</groupId>
+	<artifactId>mysql-connector-java</artifactId>
+	<scope>runtime</scope>
+</dependency>
+yml文件配置
+    spring:
+      datasource: # 数据库配置
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        #mysql-connector-java8.0.0+版本需要增加参数&serverTimezone=Asia/Shanghai&useTimezone=true
+        url: jdbc:mysql://localhost:3306/learning?useSSL=false&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&autoReconnect=true&failOverReadOnly=false&maxReconnects=10&serverTimezone=Asia/Shanghai&useTimezone=true
+        username: root
+        password: 123456
+        hikari:
+          maximum-pool-size: 10 # 最大连接池数
+          max-lifetime: 1770000
+    mybatis:
+      # 指定别名设置的包为所有entity
+      type-aliases-package: com.sunfj.entity
+      configuration:
+        map-underscore-to-camel-case: true # 驼峰命名规范
+      mapper-locations: # mapper映射文件位置
+        - classpath:mapper/*.xml
+
+
+1、通过xml配置文件形式使用
+    在配置位置生成xml文件，在文件中配置数据库表查询信息及DAO类名称
+    创建接口实现xml内业务，增加@Mapper注解或者启动类增加@MapperScan("*.dao")注册进mybatis
+
+2、注解使用
+    @Select， @Insert， @Update， Delete
+    使用@Param对应多个ID
+    使用@Results({
+        @Result(property = "username", column = "user_name")
+    })对应字段,默认驼峰命名法，类似xml文件中ResultMap
+
+
