@@ -22,6 +22,7 @@
         <module>springcloud</module>
         <module>springboot</module>
         <module>LeetCode</module>
+        <module>multithreadreview</module>
     </modules>
     <dependencies>
         <!--spring-boot-starter-web 依赖-->

@@ -11,7 +11,7 @@
     @Qualifier(“beanName”)
         通过别名控制访问相同类型。
     @Value("${url.orderUrl}")
-            获取配置文件中的属性
+        获取配置文件中的属性
 2、MVC流程注解
     @Service
     @Controller
@@ -98,7 +98,9 @@
         修饰dao方法参数，对应多个参数名称
     @Results({@Result(property = "username", column = "user_name")})
         明文设置entity与数据库对应字段,默认驼峰命名法，类似xml文件中ResultMap
-
+7、事务
+    @Transactional(Exception.class)
+    使用于方法
 
 
 
@@ -246,5 +248,202 @@
         使用@Results({
             @Result(property = "username", column = "user_name")
         })对应字段,默认驼峰命名法，类似xml文件中ResultMap
+
+
+九、事务控制
+    1、依赖配置
+        使用mybatis依赖，导入了 mysql 依赖后，Spring Boot 会自动注入 DataSourceTransactionManager，我们不需要任何其他的配置就可以用 @Transactional 注解进行事务的使用
+    2、注解
+        使用事务@Transactional 注解即可，适用于方法，生效范围为被注解的方法内发生RuntimeException和Error,rollbackFor属性可以指定异常类型
+        常用@Transactional(Exception.class)
+    3、失效场景
+        非指定异常
+
+        异常已经被try.catch处理，直接往上抛，给上一层来处理即可，千万不要在事务中把异常自己 ”吃“ 掉。
+
+        @Transactional(rollbackFor = Exception.class)
+            public synchronized void isertUser4(User user) {
+                // 实际中的具体业务……
+                userMapper.insertUser(user);
+            }
+        }
+        可以看到，因为要考虑并发问题，我在业务层代码的方法上加了个 synchronized 关键字。我举个实际的场景，比如一个数据库中，针对某个用户，只有一条记录，下一个插入动作过来，会先判断该数据库中有没有相同的用户，如果有就不插入，就更新，没有才插入，所以理论上，数据库中永远就一条同一用户信息，不会出现同一数据库中插入了两条相同用户的信息。
+        但是在压测时，就会出现上面的问题，数据库中确实有两条同一用户的信息，分析其原因，在于事务的范围和锁的范围问题。
+        从上面方法中可以看到，方法上是加了事务的，那么也就是说，在执行该方法开始时，事务启动，执行完了后，事务关闭。但是 synchronized 没有起作用，其实根本原因是因为事务的范围比锁的范围大。也就是说，在加锁的那部分代码执行完之后，锁释放掉了，但是事务还没结束，此时另一个线程进来了，事务没结束的话，第二个线程进来时，数据库的状态和第一个线程刚进来是一样的。即由于mysql Innodb引擎的默认隔离级别是可重复读（在同一个事务里，SELECT的结果是事务开始时时间点的状态），线程二事务开始的时候，线程一还没提交完成，导致读取的数据还没更新。第二个线程也做了插入动作，导致了脏数据。
+        这个问题可以避免，第一，把事务去掉即可（不推荐）；第二，在调用该 service 的地方加锁，保证锁的范围比事务的范围大即可。
+
+
+十、监听器
+    /**
+     * 使用ApplicationListener来初始化一些数据到application域中的监听器
+     * @author shengni ni
+     * @date 2018/07/05
+     */
+    @Component
+    public class MyServletContextListener implements ApplicationListener<ContextRefreshedEvent> {
+
+        @Override
+        public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+            // 先获取到application上下文
+            ApplicationContext applicationContext = contextRefreshedEvent.getApplicationContext();
+            // 获取对应的service
+            UserService userService = applicationContext.getBean(UserService.class);
+            User user = userService.getUser();
+            // 获取application域对象，将查到的信息放到application域中
+            ServletContext application = applicationContext.getBean(ServletContext.class);
+            application.setAttribute("user", user);
+        }
+    }
+
+
+
+    /**
+     * 使用HttpSessionListener统计在线用户数的监听器
+     * @author shengwu ni
+     * @date 2018/07/05
+     */
+    @Component
+    public class MyHttpSessionListener implements HttpSessionListener {
+
+        private static final Logger logger = LoggerFactory.getLogger(MyHttpSessionListener.class);
+
+        /**
+         * 记录在线的用户数量
+         */
+        public Integer count = 0;
+
+        @Override
+        public synchronized void sessionCreated(HttpSessionEvent httpSessionEvent) {
+            logger.info("新用户上线了");
+            count++;
+            httpSessionEvent.getSession().getServletContext().setAttribute("count", count);
+        }
+
+        @Override
+        public synchronized void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
+            logger.info("用户下线了");
+            count--;
+            httpSessionEvent.getSession().getServletContext().setAttribute("count", count);
+        }
+    }
+
+    /**
+     * 使用ServletRequestListener获取访问信息
+     * @author shengwu ni
+     * @date 2018/07/05
+     */
+    @Component
+    public class MyServletRequestListener implements ServletRequestListener {
+
+        private static final Logger logger = LoggerFactory.getLogger(MyServletRequestListener.class);
+
+        @Override
+        public void requestInitialized(ServletRequestEvent servletRequestEvent) {
+            HttpServletRequest request = (HttpServletRequest) servletRequestEvent.getServletRequest();
+            logger.info("session id为：{}", request.getRequestedSessionId());
+            logger.info("request url为：{}", request.getRequestURL());
+
+            request.setAttribute("name", "测试");
+        }
+
+        @Override
+        public void requestDestroyed(ServletRequestEvent servletRequestEvent) {
+
+            logger.info("request end");
+            HttpServletRequest request = (HttpServletRequest) servletRequestEvent.getServletRequest();
+            logger.info("request域中保存的name值为：{}", request.getAttribute("name"));
+
+        }
+
+    }
+
+
+
+十一、拦截器
+    1、定义拦截器
+        只需要实现 HandlerInterceptor 接口，HandlerInterceptor 接口是所有自定义拦截器或者 Spring Boot 提供的拦截器的鼻祖，所以，首先来了解下该接口。该接口中有三个方法： preHandle(……)、postHandle(……) 和 afterCompletion(……) 。
+
+        preHandle(……) 方法：该方法的执行时机是，当某个 url 已经匹配到对应的 Controller 中的某个方法，且在这个方法执行之前。所以 preHandle(……) 方法可以决定是否将请求放行，这是通过返回值来决定的，返回 true 则放行，返回 false 则不会向后执行。
+        postHandle(……) 方法：该方法的执行时机是，当某个 url 已经匹配到对应的 Controller 中的某个方法，且在执行完了该方法，但是在 DispatcherServlet 视图渲染之前。所以在这个方法中有个 ModelAndView 参数，可以在此做一些修改动作。
+        afterCompletion(……) 方法：顾名思义，该方法是在整个请求处理完成后（包括视图渲染）执行，这时做一些资源的清理工作，这个方法只有在 preHandle(……) 被成功执行后并且返回 true 才会被执行。
+    2、配置拦截器
+       Spring Boot 2.0 之后，继承 WebMvcConfigurationSupport 类，重写addInterceptors 方法
+    3、解决静态资源被拦截问题
+        在 MyInterceptorConfig 配置类中重写 addInterceptors 方法外，还需要再重写一个方法：addResourceHandlers，将静态资源放开：
+        /**
+         * 用来指定静态资源不被拦截，否则继承WebMvcConfigurationSupport这种方式会导致静态资源无法直接访问
+         * @param registry
+         */
+        @Override
+        protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+            registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
+            super.addResourceHandlers(registry);
+
+
+       不继承 WebMvcConfigurationSupport 类，直接实现 WebMvcConfigurer 接口，然后重写 addInterceptors 方法，将自定义的拦截器添加进去即可，如下：
+       @Configuration
+        public class MyInterceptorConfig implements WebMvcConfigurer {
+            @Override
+            public void addInterceptors(InterceptorRegistry registry) {
+                // 实现WebMvcConfigurer不会导致静态资源被拦截
+                registry.addInterceptor(new MyInterceptor()).addPathPatterns("/**");
+            }
+
+        继承 WebMvcConfigurationSupport 类的方式可以用在前后端分离的项目中，后台不需要访问静态资源（就不需要放开静态资源了）；
+        实现 WebMvcConfigure 接口的方式可以用在非前后端分离的项目中，因为需要读取一些图片、css、js文件等等。
+
+
+十二、集成Redis
+    依赖导入
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-redis</artifactId>
+    </dependency>
+
+    Redis 配置
+    spring:
+      #redis相关配置
+      redis:
+        database: 5
+        # 配置redis的主机地址，需要修改成自己的
+        host: 192.168.48.190
+        port: 6379
+        password: 123456
+        timeout: 5000
+        jedis:
+          pool:
+            # 连接池中的最大空闲连接，默认值也是8。
+            max-idle: 500
+            # 连接池中的最小空闲连接，默认值也是0。
+            min-idle: 50
+            # 如果赋值为-1，则表示不限制；如果pool已经分配了maxActive个jedis实例，则此时pool的状态为exhausted(耗尽)
+            max-active: 1000
+            # 等待可用连接的最大时间，单位毫秒，默认值为-1，表示永不超时。如果超过等待时间，则直接抛出JedisConnectionException
+            max-wait: 2000
+
+    常用 api
+    RedisTemplate 和 StringRedisTemplate
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

@@ -1,0 +1,113 @@
+一、线程基础
+    1、线程创建
+        -继承Thread类，实现run方法
+        -实现Runnable接口，实现run方法
+    2、线程常用方法
+        -Thread.currentThread
+            获得当前线程对象
+        -getName()
+        -setName(String a)
+        -isAlive()
+            判断当前线程是否处于活动状态
+
+二、锁
+    1、相关概念
+        -可重入性：一个线程持有该锁的时候能再次（多次）申请该锁， 如果一个线程持有一个锁的时候，还能够继续成功申请该锁，称该锁是可重入的，否则就称该锁为不可重入锁
+        -锁的粒度：一个锁可以保护的共享数据的数量大小称为锁的粒度
+    2、内部锁：synchronized关键字
+        -Java中的每个对象都有一个与之关联的内部锁（Intrinsic Lock）。java中的线程锁无论何种形式，都是基于对象为目标进行管理的
+        -synchronized关键字可以修饰代码块和方法
+         ① 修饰代码块,同步代码块，想要同步必须使用同一个锁对象
+         ② 修饰实例方法也称为同步实例方法,默认的锁对象是this对象
+         ③ 修饰静态方法也称为同步静态方法：类锁
+        -
+    3、volatile
+        -JVM中多线程在执行时，对象实例首先被加载到主内存中，当单个线程需要引入对象实例时，需要先到主内存复制对象副本到线程私有内存中，当线程被执行完毕后，再把结果替换回主内存对应对象实例。
+        多线程在执行时，为了避免线程等待时间过长，使用了并行而非串行，这就导致了不同线程由于执行顺序的不确定，在复制——替换主内存对象实例时相互影响。
+        -解决方法一：线程在引入主内存对象时，可以使用加锁操作，替换后执行解锁操作（synchronized原理），若是由于其他原因无法解锁，便会造成死锁
+        -解决方法二：线程内读写后立即在主内存进行读写操作，也就是volatile关键字，其他线程便可见，但是读取和修改之间的空隙可能会被其他线程修改，所以不具有原子性。如果只有一个线程可以写其他线程只能读，实现了原子性，写线程如果在线程内存中复制--替换，便是mysql读写主从分离库了
+                  但是会造成一个问题，java由于跨平台，在线程执行时会指令重排，在主内存读写无法进行指令重排，引入内存屏障，所以实现了有序性。
+
+
+三、JUC
+    java.util包下面三个子包concurrent、concurrent.atomic、locks
+    Java代码获取CPU核数
+    Runtime.getRuntime().availableProcessors()
+    Thread.State枚举类中定义了线程的6种状态
+    wait()方法和sleep()方法区别
+        来自不同的类
+        ① wait()方法来自于Object类
+        ② sleep()方法来自于Thread类
+        ③ 企业开发中，一般不使用sleep()方法，而更多的会使用TimeUnit.SECONDS.sleep(long timeout)方法来休眠线程
+        关于锁的释放
+        ① wait()方法会释放锁
+        ② sleep()方法不会释放锁（抱着锁睡觉！）
+        使用范围不同
+        ① wait()方法必须使用在同步代码块中
+        ② sleep()方法可以在程序的任何地方使用
+
+
+    1、Lock锁
+        -三个常用实现类：ReentrantLock,ReentrantReadWriteLock.ReadLock,ReentrantReadWriteLock.WriteLock
+        -确保锁定时执行的所有代码有try-catch/finally保护
+        -ReentrantLock的无参构造器，默认构造的是非公平锁
+        -公平锁和非公平锁
+         ① 公平锁：十分公平，保证线程先来后到
+         ② 非公平锁：十分不公平，线程可以插队（Synchronized锁和Lock锁默认都是非公平锁）
+        - // 获取condition对象
+             Condition condition = lock.newCondition();
+            condition.await();
+        // 通知唤醒
+            condition.signalAll();
+
+    2、Synchronized锁和Lock锁区别
+          Synchronized是内置的Java关键字，Lock是一个Java接口
+          Synchronized无法判断是否获取到了锁，Lock可以判断是否获取到了锁
+          Synchronized会自动释放锁（线程执行完或者线程抛出异常都会释放锁），Lock必须要手动释放锁（如果不手动释放锁，会造成死锁）
+          Synchronized如果线程1获得锁（阻塞了），线程2就处于等待（死死的等）；Lock就不一定会等待下去（lock.tryLock()方法尝试获取锁）
+          Synchronized是可重入锁，不可以中断的，且是非公平锁；Lock是可重入锁，但可以中断，默认非公平锁（可以设置为公平锁）
+          Synchronized适合锁少量的代码同步问题，Lock适合锁大量的同步代码
+
+
+    3、线程安全集合
+        -List:使用Vector类【不推荐】
+              使用Collections.synchronizedList()方法将普通的ArrayList类转换为安全的集合类,List<String> list = Collections.synchronizedList(new ArrayList<>());
+              使用CopyOnWriteArrayList类:持有锁对象，写操作加锁
+        -Set:使用Collections.synchronizedSet()方法将普通的HashSet类转换为安全的集合类
+             使用CopyOnWriteArraySet类
+        -Map:使用Collections.synchronizedMap()方法将普通的HashMap类转换为安全的集合类
+             使用ConcurrentHashMap类,使用CAS,1.7之前分段，1.8之后对Node对象进项加锁
+
+    4、Callable
+        -与继承Thread类和实现Runnable接口两种创建线程方式的区别
+         ① Callable接口可以有返回值
+         ② Callable接口可以抛出异常
+         ③ 执行方法不同，call()方法和run()方法
+        -使用：
+            // FutureTask是Runnable接口的一个实现类
+                    // FutureTask构造器接收Callable参数
+                    FutureTask<String> futureTask = new FutureTask<>(new MyThread3());
+                    new Thread(futureTask, String.valueOf(i)).start();
+                    // futureTask.get()方法可能会产生阻塞，一般是放在程序最后
+                    // 或者使用异步通信来处理！
+                    System.out.println(futureTask.get());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

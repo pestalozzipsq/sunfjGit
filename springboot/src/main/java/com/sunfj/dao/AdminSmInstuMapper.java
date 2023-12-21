@@ -6,5 +6,5 @@ import org.apache.ibatis.annotations.Select;
 
 public interface AdminSmInstuMapper {
     @Select("select  instu_id,sys_id,instu_cde,instu_name from admin_sm_instu where instu_id=#{instu_id}")
-    public AdminSmInstu getByInstuId(@Param("instu_id")String id);
+    AdminSmInstu getByInstuId(@Param("instu_id")String id);
 }
