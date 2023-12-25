@@ -206,6 +206,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-aop</artifactId>
     </dependency>
+    类上加入@Aspect注解，类中创建方法，加入@PointCut注解，
 
 
 八、集成mybatis

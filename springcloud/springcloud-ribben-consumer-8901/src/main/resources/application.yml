@@ -1,0 +1,13 @@
+server:
+  port: 8901
+
+eureka:
+  client:
+    service-url:
+      #此服务注册的地址,需要跟eureka模块中地址一致,注意这里用server.port是8900不是8899不要用变量
+      #defaultZone:  http://${eureka.instance.hostname}:8899/eureka
+      defaultZone: http://localhost:8899/eureka
+
+spring:
+  application:
+    name: ribbon-consumer-8901

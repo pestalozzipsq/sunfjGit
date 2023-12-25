@@ -25,8 +25,12 @@
         <module>multithreadreview</module>
     </modules>
     <dependencies>
-        <!--spring-boot-starter-web 依赖-->
-
+        <!--lombok 依赖-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
 
 
     </dependencies>

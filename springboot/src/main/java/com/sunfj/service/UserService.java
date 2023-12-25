@@ -15,7 +15,7 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void isertUser(User user) {
         // 插入用户信息
         userMapper.insertUser(user);
