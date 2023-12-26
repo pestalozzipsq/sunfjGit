@@ -15,6 +15,7 @@
         <module>springcloud-eureka-server-8899</module>
         <module>springcloud-eureka-client-8900</module>
         <module>springcloud-ribben-consumer-8901</module>
+        <module>springcloud-feign-8903</module>
     </modules>
 
     <properties>

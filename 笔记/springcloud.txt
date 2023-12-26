@@ -59,13 +59,31 @@
             </dependency>
             如果引入了 nacos-discovery依赖，可以不用再引入ribbon依赖。因为 nacos-discovery依赖了ribbon
         -配置：
+            自动注入RestTemplate
         -注解：
             @LoadBalanced
 
+
     16.Turbine（Netflix）
     Turbine是聚合服务器发送事件流数据的一个工具，用来监控集群下hystrix的metrics情况。
+
+
     17.Feign（OpenFeign）
-    Feign是一种声明式、模板化的HTTP客户端。
+        -Feign是一种声明式、模板化的HTTP客户端。
+        -OpenFeign是Spring Cloud在Feign的基础上支持了SpringMVC的注解，如@RequesMapping等等。OpenFeign的@Feignclient可以解析SpringMVc的@RequestMapping注解下的接口，并通过动态代理的方式产生实现类，实现类中做负载均衡并调用其他服务。
+        -依赖
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-feign</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-openfeign</artifactId>
+            </dependency>
+        -配置
+        -注解
+
+
     18.Spring Cloud Task（Spring）
     提供云端计划任务管理、任务调度。
     19.Spring Cloud Connectors（Spring）
