@@ -1,0 +1,18 @@
+server:
+  port: 8903
+
+eureka:
+  client:
+    service-url:
+      #此服务注册的地址,需要跟eureka模块中地址一致,注意这里用server.port是8900不是8899不要用变量
+      #defaultZone:  http://${eureka.instance.hostname}:8899/eureka
+      defaultZone: http://localhost:8899/eureka
+
+logging:
+  level:
+    com.sunfj.service: debug
+
+
+spring:
+  application:
+    name: feign-consumer
