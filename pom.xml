@@ -23,6 +23,7 @@
         <module>springboot</module>
         <module>LeetCode</module>
         <module>multithreadreview</module>
+        <module>javafeatures</module>
     </modules>
     <dependencies>
         <!--lombok 依赖-->
