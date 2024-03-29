@@ -1,0 +1,78 @@
+1.8jdk
+
+一、::
+    1、“::”可以省略某些情况的lambda
+    2、
+二、函数式接口
+    1、创建方式
+        1）lambda表达式
+            FunctionInterface xxx = arg->return;
+            FunctionInterface xxx = Class::method;
+三、lambda表达式
+四、Stream
+    以一种声明性方式处理数据集合（侧重对于源数据计算能力的封装，并且支持序列与并行两种操作方式）
+
+    1、创建方式
+        1）通过 java.util.Collection.stream() 方法用集合创建流
+            List<String> list = new ArrayList<>();
+            Stream<String> stream = list.stream();  //串行流
+            Stream<String> parallelStream = list.parallelStream(); //并行流
+
+        2）使用java.util.Arrays.stream(T[] array)方法用数组创建流
+            int[] array={1,3,5,6,8};
+            IntStream stream = Arrays.stream(array);
+
+        3)使用Stream的静态方法：of()、iterate()、generate()
+            Stream<Integer> stream = Stream.of(1, 2, 3, 4, 5, 6);
+
+            Stream<Integer> stream2 = Stream.iterate(0, (x) -> x + 3).limit(4);
+            stream2.forEach(System.out::println);
+
+            Stream<Double> stream3 = Stream.generate(Math::random).limit(3);
+            stream3.forEach(System.out::println);
+
+    2、操作符
+        中间操作符：一个流可以跟随零个或多个中间操作。其目的主要是打开流，做出某种程度的数据映射/过滤，然后返回一个新的流，交给下一个操作使用，
+        这类操作都是惰性化的，仅仅调用到这类方法，并没有真正开始流的遍历，真正的遍历需等到终端操作时，
+        1）filter
+            用于通过设置的条件过滤出元素
+        2）map
+            接受一个函数作为参数。这个函数会被应用到每个元素上，并将其映射成一个新的元素（使用映射一词，是因为它和转换类似，但其中的细微差别在于它是“创建一个新版本”而不是去“修改”）
+            map方法也可以改变流内的对象类型
+        3)distinct
+            去重
+        4)sorted
+            无参自然排序，需要集合元素实现Comparable接口
+            参数可以是Comparator内的方法 如 reverseOrder()\comparing(XXX::xx)
+        5)limit
+            会返回一个不超过给定长度的流
+        6)skip
+            返回一个扔掉了前n个元素的流
+        7)flatMap
+            流扁平化，让你把一个流中的“每个值”都换成另一个流，然后把所有的流连接起来成为一个流
+        8)peek
+            对元素进行遍历处理
+
+        终端操作符
+            执行完终端操作之后，无法再执行其他动作
+        1）
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
