@@ -9,6 +9,7 @@
             FunctionInterface xxx = arg->return;
             FunctionInterface xxx = Class::method;
 三、lambda表达式
+    (arg)->{function}
 四、Stream
     以一种声明性方式处理数据集合（侧重对于源数据计算能力的封装，并且支持序列与并行两种操作方式）
 
@@ -55,9 +56,39 @@
 
         终端操作符
             执行完终端操作之后，无法再执行其他动作
-        1）
+        1）collect(Collector.)
+            收集器，将流转换为其他形式
+                -toList
+                -toMap(a,b)
+                -toSet
+                -counting 流的个数
+                -summingInt 求和
+                -minBy
+                -joining
+                -groupingBy
 
-
+        2)forEach
+            遍历流
+        3)findFirst
+            返回第一个元素
+        4)findAny
+            将返回当前流中的任意元素
+        5)count
+            返回流中元素总数
+        6)sum
+            求和
+        7)max
+            最大值
+        8)min
+            最小值
+        9)anyMatch
+            检查是否至少匹配一个元素，返回boolean
+        10)allMatch
+            检查是否匹配所有元素，返回boolean
+        11）noneMatch
+            检查是否没有匹配所有元素，返回boolean
+        12）reduce
+            可以将流中元素反复结合起来，得到一个值
 
 
 
